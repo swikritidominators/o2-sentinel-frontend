@@ -4,6 +4,11 @@ import TrendChart from './dashboard/components/TrendChart';
 import PredictionChart from './dashboard/components/PredictionChart';
 import Loader from './dashboard/components/Loader';
 
+import {
+  getSensorData,
+  getAlerts,
+  getDevices,
+} from "./services/api";
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [systemTime, setSystemTime] = useState<Date>(new Date());
@@ -13,7 +18,8 @@ export default function App() {
   const [temperature, setTemperature] = useState(25.5);
   const [humidity, setHumidity] = useState(48.1);
   const [mockAnomaly, setMockAnomaly] = useState(false);
-
+const [alerts, setAlerts] = useState([]);
+const [devices, setDevices] = useState([]);
   // Telemetry history states for live graphing (pre-populated with realistic atmospheric values)
   const [oxygenHistory, setOxygenHistory] = useState<number[]>(() => 
     Array.from({ length: 15 }, () => 20.6 + Math.random() * 0.3)
@@ -26,12 +32,12 @@ export default function App() {
   );
 
   // System clock timer
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSystemTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  //useEffect(() => {
+    //const timer = setInterval(() => {
+      //setSystemTime(new Date());
+    //}, 1000);
+    //return () => clearInterval(timer);
+  //}, []);
 
   // Telemetry simulation loop (runs continuously in online state with 10s intervals mock update)
   useEffect(() => {
